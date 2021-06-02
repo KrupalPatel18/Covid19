@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block body %}
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{url_for('static',filename='assets/img/home-bg.jpg')}}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Covid 19 Tracker</h1>
+                            <span class="subheading">Real time bed Availability</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <div class="container">
+            <form action="/filter" method="POST">
+                <select id="pincode" name="pincode">
+                    <option value="all" selected>All Pincode</option>
+                    {% for pincode in pincodes %}
+                        <option value={{pincode}}>{{pincode}}</option>
+                    {% endfor %}
+                </select>
+                <select id="zone" name="zone">
+                    <option value="all" selected>All Zones</option>
+                    {% for zone in zones %}
+                        <option value="{{zone}}">{{zone}}</option>
+                    {% endfor %}
+                </select>
+                <select id="condition" name="condition">
+                        <option value="all" selected>Patient condition</option>
+                        <option value="isolation_bed">Isolation Beds required</option>
+                        <option value="oxygen_beds">Oxygen Beds required</option>
+                        <option value="icu_beds">ICU Beds required</option>
+                        <option value="icu_with_ventilator">ICU Beds with Ventilator required</option>
+                </select>
+                <input type="submit">
+            </form>
+            <hr>
+            <table class="table table-dark mt-4">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Available Beds</th>
+                    <th scope="col">Isolation Bed</th>
+                    <th scope="col">Oxygen Beds</th>
+                    <th scope="col">Icu Beds</th>
+                    <th scope="col">Icu Beds With Ventilator</th>
+                    <th scope="col">Pincode</th>
+                    <th scope="col">Zone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for hospital in hospitals %}
+                        <tr>
+                            <td>{{hospital['name']}}</th>
+                            <td>{{hospital['beds_available ']}}</td>
+                            <td>{{hospital['isolation_bed']}}</td>
+                            <td>{{hospital['oxygen_beds']}}</td>
+                            <td>{{hospital['icu_beds']}}</td>
+                            <td>{{hospital['icu_with_ventilator']}}</td>
+                            <td>{{hospital['pincode']}}</td>
+                            <td>{{hospital['zone']}}</td>
+                            <td><a href="/book/{{hospital['_id']}}"><button class="btn btn-sm btn-primary">Book Appoinment</button></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% endblock %}

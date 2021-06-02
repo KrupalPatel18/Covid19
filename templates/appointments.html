@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block body %}
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{url_for('static',filename='assets/img/home-bg.jpg')}}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Covid 19 Tracker</h1>
+                            <span class="subheading">Real time bed Availability</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <table class="table table-dark mt-4">
+                <thead>
+                  <tr>
+                    <th scope="col">Patient Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Hospital Name</th>
+                    <th scope="col">Bed Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                        <tr>
+                            <td>{{appointment['name']}}</th>
+                            <td>{{appointment['email']}}</td>
+                            <td>{{appointment['phone']}}</td>
+                            <td>{{appointment['hospital']}}</td>
+                            <td>{{appointment['bed']}}</td>
+                            <td><a href="/cencel/{{appointment['email']}}/{{appointment['hospital']}}/{{appointment['bed']}}"><button class="btn btn-sm btn-primary">Cencel Appoinment</button></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% endblock %}
