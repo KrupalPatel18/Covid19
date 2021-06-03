@@ -7,7 +7,7 @@ import certifi
 app = Flask(__name__)
 app.secret_key = 'python'
 
-client = MongoClient("mongodb+srv://krupal:krupal123@cluster0.xvmi0.mongodb.net/test?retryWrites=true&w=majority",tls=True,tlsCAFile=certifi.where()) 
+client = MongoClient("mongodb+srv://admin:<password>@cluster0.xvmi0.mongodb.net/test?retryWrites=true&w=majority",tls=True,tlsCAFile=certifi.where()) 
 db = client.hospital_beds
 col = db.hospital
 users_col = db.users
