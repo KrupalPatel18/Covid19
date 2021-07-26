@@ -11,6 +11,8 @@ client = MongoClient("mongodb+srv://admin:<password>@cluster0.xvmi0.mongodb.net/
 db = client.hospital_beds
 col = db.hospital
 users_col = db.users
+d = client.dummy
+h = d.hotel
 
 @app.route("/")
 def home():
@@ -24,6 +26,8 @@ def home():
 
 @app.route("/appointments")
 def appointments():
+    if 'user' not in session:
+        return render_template("login.html")
     username = session['user']
     user = users_col.find_one({"username":username})
     appointments = user['appointment']
@@ -102,9 +106,11 @@ def booked():
     phone = request.form['phone']
     bed = request.form['bed_type']
     _id = ObjectId(id)
+    hosp = col.find_one({"_id":_id})
+    if hosp[bed] is 0:
+        return redirect("/")
     filter = {"_id" : _id}
     new_value = {"$inc" : { bed : -1 , "beds_available ":-1} }
-    print(bed)
     col.update_one(filter,new_value)
     username = session['user']
     filter = {"username":username}
@@ -132,6 +138,9 @@ def signup():
             "username":username,
             "password":password
         }
+        user = users_col.find_one({"username":username})
+        if user:
+            return render_template("login.html")
         users_col.insert_one(new_user)
         session['user'] = username
         return redirect("/")
